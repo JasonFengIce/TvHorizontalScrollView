@@ -6,7 +6,7 @@ Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
 def projectName = "TvHorizontalScrollView"
-def versionTag = "1.0"
+def versionTag = "1.1"
 def groupId = "cn.ismartv.tvhorizontalscrollview"
 def siteUrl = 'https://github.com/JasonFengIce/TvHorizontalScrollView'
 def gitUrl = 'git@github.com:JasonFengIce/TvHorizontalScrollView.git'

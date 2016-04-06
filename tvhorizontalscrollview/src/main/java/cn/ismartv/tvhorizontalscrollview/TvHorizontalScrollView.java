@@ -105,6 +105,8 @@ public class TvHorizontalScrollView extends FrameLayout {
     private View mLeftArrow;
     private View mRightArrow;
 
+    private int mCoverOffset;
+
     public TvHorizontalScrollView(Context context, AttributeSet attrs) {
         super(context, attrs);
         initScrollView();
@@ -119,6 +121,13 @@ public class TvHorizontalScrollView extends FrameLayout {
         mRightArrow = rightArrow;
     }
 
+    public int getCoverOffset() {
+        return mCoverOffset;
+    }
+
+    public void setCoverOffset(int coverOffset) {
+        mCoverOffset = coverOffset;
+    }
 
     @Override
     protected float getLeftFadingEdgeStrength() {
@@ -943,16 +952,26 @@ public class TvHorizontalScrollView extends FrameLayout {
 //        Rect lastChildViewRect = new Rect();
 //        lastChildView.getGlobalVisibleRect(lastChildViewRect);
 
-        if (!isViewCovered(firstChildView)) {
+        if (firstChildView != null && !isViewCovered(firstChildView)) {
             mLeftArrow.setVisibility(View.INVISIBLE);
+            firstChildView.requestFocus();
         } else {
-            mLeftArrow.setVisibility(View.VISIBLE);
+            if (firstChildView == null) {
+                mLeftArrow.setVisibility(View.INVISIBLE);
+            } else {
+                mLeftArrow.setVisibility(View.VISIBLE);
+            }
         }
 
-        if (!isViewCovered(lastChildView)) {
+        if (lastChildView != null && !isViewCovered(lastChildView)) {
             mRightArrow.setVisibility(View.INVISIBLE);
+            lastChildView.requestFocus();
         } else {
-            mRightArrow.setVisibility(View.VISIBLE);
+            if (lastChildView == null) {
+                mRightArrow.setVisibility(INVISIBLE);
+            } else {
+                mRightArrow.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -1247,12 +1266,17 @@ public class TvHorizontalScrollView extends FrameLayout {
                 View otherView = currentParent.getChildAt(i);
                 Rect otherViewRect = new Rect();
                 otherView.getGlobalVisibleRect(otherViewRect);
-                if (Rect.intersects(viewRect, otherViewRect))//if view intersects its older brother(covered),return true
+                if (intersects(viewRect, otherViewRect))//if view intersects its older brother(covered),return true
                     return true;
             }
             currentView = currentParent;
         }
         return false;
+    }
+
+    private boolean intersects(Rect a, Rect b) {
+        return Math.abs(a.left - b.right) < mCoverOffset && Math.abs(b.left - a.right) < mCoverOffset
+                && Math.abs(a.top - b.bottom) < mCoverOffset && Math.abs(b.top - a.bottom) < mCoverOffset;
     }
 
     private int indexOfViewInParent(View view, ViewGroup parent) {
