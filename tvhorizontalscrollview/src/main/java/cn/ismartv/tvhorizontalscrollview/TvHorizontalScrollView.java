@@ -954,7 +954,7 @@ public class TvHorizontalScrollView extends FrameLayout {
 
         if (firstChildView != null && !isViewCovered(firstChildView)) {
             mLeftArrow.setVisibility(View.INVISIBLE);
-            firstChildView.requestFocus();
+//            firstChildView.requestFocus();
         } else {
             if (firstChildView == null) {
                 mLeftArrow.setVisibility(View.INVISIBLE);
@@ -965,7 +965,7 @@ public class TvHorizontalScrollView extends FrameLayout {
 
         if (lastChildView != null && !isViewCovered(lastChildView)) {
             mRightArrow.setVisibility(View.INVISIBLE);
-            lastChildView.requestFocus();
+//            lastChildView.requestFocus();
         } else {
             if (lastChildView == null) {
                 mRightArrow.setVisibility(INVISIBLE);
