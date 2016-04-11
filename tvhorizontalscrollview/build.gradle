@@ -6,7 +6,7 @@ Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
 def projectName = "TvHorizontalScrollView"
-def versionTag = "1.2"
+def versionTag = "1.3"
 def groupId = "cn.ismartv.tvhorizontalscrollview"
 def siteUrl = 'https://github.com/JasonFengIce/TvHorizontalScrollView'
 def gitUrl = 'git@github.com:JasonFengIce/TvHorizontalScrollView.git'
@@ -62,7 +62,6 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:23.2.1'
 }
 
 task sourcesJar(type: Jar) {
