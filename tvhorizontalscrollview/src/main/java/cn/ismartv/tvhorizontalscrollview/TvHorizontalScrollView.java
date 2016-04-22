@@ -107,6 +107,12 @@ public class TvHorizontalScrollView extends FrameLayout {
 
     private int mCoverOffset;
 
+    private OnNothingSeleted mOnNothingSeleted;
+
+    public void setOnNothingSeleted(OnNothingSeleted onNothingSeleted) {
+        mOnNothingSeleted = onNothingSeleted;
+    }
+
     public TvHorizontalScrollView(Context context, AttributeSet attrs) {
         super(context, attrs);
         initScrollView();
@@ -954,7 +960,9 @@ public class TvHorizontalScrollView extends FrameLayout {
 
         if (firstChildView != null && !isViewCovered(firstChildView)) {
             mLeftArrow.setVisibility(View.INVISIBLE);
-//            firstChildView.requestFocus();
+//            if (mOnNothingSeleted != null) {
+//                mOnNothingSeleted.onTheFirst();
+//            }
         } else {
             if (firstChildView == null) {
                 mLeftArrow.setVisibility(View.INVISIBLE);
@@ -965,7 +973,9 @@ public class TvHorizontalScrollView extends FrameLayout {
 
         if (lastChildView != null && !isViewCovered(lastChildView)) {
             mRightArrow.setVisibility(View.INVISIBLE);
-//            lastChildView.requestFocus();
+            if (mOnNothingSeleted != null) {
+                mOnNothingSeleted.onTheLast();
+            }
         } else {
             if (lastChildView == null) {
                 mRightArrow.setVisibility(INVISIBLE);
@@ -1236,15 +1246,12 @@ public class TvHorizontalScrollView extends FrameLayout {
 
         int scrollDelta = computeScrollDeltaToGetChildRectOnScreen(mTempRect);
 
-        if (scrollDelta != 0 && (!child.isHovered() && !isViewCovered(child) || ispageScrool)) {
+        if ((scrollDelta != 0 && (!child.isHovered() && !isViewCovered(child))) || (scrollDelta != 0 && child.isSelected())) {
             scrollBy(scrollDelta, 0);
         }
-        ispageScrool = false;
 
     }
 
-
-    boolean ispageScrool = false;
 
     public boolean isViewCovered(final View view) {
         View currentView = view;
@@ -1391,7 +1398,7 @@ public class TvHorizontalScrollView extends FrameLayout {
     /**
      * When looking for focus in children of a scroll view, need to be a little
      * more careful not to give focus to something that is scrolled off screen.
-     * <p>
+     * <p/>
      * This is more expensive than the default {@link ViewGroup}
      * implementation, otherwise this behavior might have been made the default.
      */
@@ -1594,5 +1601,11 @@ public class TvHorizontalScrollView extends FrameLayout {
             return child - my;
         }
         return n;
+    }
+
+    public interface OnNothingSeleted {
+        void onTheFirst();
+
+        void onTheLast();
     }
 }
